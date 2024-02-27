@@ -78,7 +78,7 @@ namespace dotnetapp.Controllers
             try
             {
                 var addedStudent = await _studentService.AddStudent(newStudent);
-                return CreatedAtAction(nameof(GetStudentById), new { studentId = addedStudent.StudentId }, addedStudent);
+                return CreatedAtAction(nameof(GetStudentById), new { id = addedStudent.StudentId }, addedStudent);
             }
             catch (Exception ex)
             {

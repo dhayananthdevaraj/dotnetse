@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace dotnetapp.Controllers
 {
-    // [Route("api/course")]
+    [Route("api/")]
     [ApiController]
     public class CourseController : ControllerBase
     {
@@ -19,7 +19,7 @@ namespace dotnetapp.Controllers
             _courseService = courseService;
         }
         
-        [Route("api/course")]
+        [Route("course")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Course>>> GetAllCourses()
         {
@@ -36,7 +36,7 @@ namespace dotnetapp.Controllers
 
         
        
-        [Route("api/student/course")]
+        [Route("student/course")]
         [HttpGet]
         public IActionResult Swagger()
         {
@@ -44,7 +44,7 @@ namespace dotnetapp.Controllers
         }
 
 
-        [Route("api/student/courses")]
+        [Route("student/courses")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Course>>> GetAllCoursesForStudent()
         {
@@ -60,7 +60,7 @@ namespace dotnetapp.Controllers
         }
 
 
-        [Route("api/course/{id}")]
+        [Route("course/{id}")]
         [HttpGet]
         public async Task<ActionResult<Course>> GetCourseById(int id)
         {
@@ -82,14 +82,18 @@ namespace dotnetapp.Controllers
         }
 
         // [Authorize(Roles = "Admin")]
-        [Route("api/course")]
+        [Route("course")]
         [HttpPost]
         public async Task<ActionResult> AddCourse([FromBody] Course newCourse)
         {
             try
             {
                 var addedCourse = await _courseService.AddCourse(newCourse);
-                return CreatedAtAction(nameof(GetCourseById), new { courseId = addedCourse.CourseID }, addedCourse);
+                var fetchedCourse = await _courseService.GetCourseById(addedCourse.CourseID);
+
+       
+                return Ok(new { message = "Course added successfully", course = fetchedCourse });
+
             }
             catch (Exception ex)
             {
@@ -98,7 +102,7 @@ namespace dotnetapp.Controllers
         }
 
         // [Authorize(Roles = "Admin")]
-         [Route("api/course/{id}")]
+         [Route("course/{id}")]
         [HttpPut]
         public async Task<ActionResult> UpdateCourse(int id, [FromBody] Course updatedCourse)
         {
@@ -118,7 +122,7 @@ namespace dotnetapp.Controllers
         }
 
         // [Authorize(Roles = "Admin")]
-        [Route("api/course/{id}")]
+        [Route("course/{id}")]
         [HttpDelete]
         public async Task<ActionResult> DeleteCourse(int id)
         {

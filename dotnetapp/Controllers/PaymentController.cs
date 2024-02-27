@@ -58,6 +58,21 @@ namespace dotnetapp.Controllers
             }
         }
 
+           [Route("api/payment/UserId/{userId}")]
+            [HttpGet]
+            public async Task<ActionResult<IEnumerable<Payment>>> GetPaymentsByUserId(int userId)
+            {
+                try
+                {
+                    var payments = await _paymentService.GetPaymentsByUserId(userId);
+                    return Ok(payments);
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, new { message = ex.Message });
+                }
+            }
+
         [Route("api/student/make-payment")]
         [HttpPost]
         public async Task<ActionResult> AddPayment([FromBody] Payment newPayment)
@@ -65,7 +80,7 @@ namespace dotnetapp.Controllers
             try
             {
                 var addedPayment = await _paymentService.AddPayment(newPayment);
-                return CreatedAtAction(nameof(GetPaymentById), new { paymentId = addedPayment.PaymentID }, addedPayment);
+                return CreatedAtAction(nameof(GetPaymentById), new { id = addedPayment.PaymentID }, addedPayment);
             }
             catch (Exception ex)
             {

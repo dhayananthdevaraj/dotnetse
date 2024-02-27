@@ -3,6 +3,8 @@
     using System.Text.Json.Serialization;
     namespace dotnetapp.Models
     {
+
+        
         public class User
         {
 

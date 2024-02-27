@@ -64,7 +64,7 @@ namespace dotnetapp.Controllers
             try
             {
                 var addedAdmission = await _admissionService.AddAdmission(newAdmission);
-                return CreatedAtAction(nameof(GetAdmissionById), new { id = addedAdmission.AdmissionID }, addedAdmission);
+                return CreatedAtAction(nameof(GetAdmissionById), new { admissionId = addedAdmission.AdmissionID }, addedAdmission);
             }
             catch (Exception ex)
             {
@@ -104,6 +104,22 @@ namespace dotnetapp.Controllers
                     return Ok(new { message = "Admission deleted successfully" });
                 else
                     return NotFound(new { message = "Cannot find the admission" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+
+        [Route("api/admission/UserId/{userId}")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Admission>>> GetAdmissionsByUserId(int userId)
+        {
+            try
+            {
+                var admissions = await _admissionService.GetAdmissionsByUserId(userId);
+                return Ok(admissions);
             }
             catch (Exception ex)
             {

@@ -75,6 +75,37 @@ namespace dotnetapp.Controllers
         }
 
 
+
+        
+    [HttpGet("api/enquiry/UserId/{userId}")]
+    public async Task<ActionResult<IEnumerable<Enquiry>>> GetEnquiriesByUserID(int userId)
+    {
+        try
+        {
+            var enquiries = await _enquiryService.GetEnquiriesByUserID(userId);
+            return Ok(enquiries);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = ex.Message });
+        }
+    }
+
+        //  [HttpGet("api/enquiry/studentId/{studentId}")]
+        //     public async Task<ActionResult<IEnumerable<Enquiry>>> GetEnquiriesByStudentID(int studentId)
+        //     {
+        //         try
+        //         {
+        //             var enquiries = await _enquiryService.GetEnquiriesByStudentID(studentId);
+        //             return Ok(enquiries);
+        //         }
+        //         catch (Exception ex)
+        //         {
+        //             return StatusCode(500, new { message = ex.Message });
+        //         }
+        //     }
+
+
         [Route("api/enquiry/{id}")]
         [HttpPut]
         public async Task<ActionResult> UpdateEnquiry(int id, [FromBody] Enquiry updatedEnquiry)

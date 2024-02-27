@@ -55,6 +55,22 @@ namespace dotnetapp.Services
             return true;
         }
 
+    //        public async Task<IEnumerable<Enquiry>> GetEnquiriesByStudentID(int studentId)
+    // {
+    //     return await _context.Enquiries
+    //         .Include(e => e.Student)
+    //         .Include(e => e.Course)
+    //         .Where(e => e.StudentId == studentId)
+    //         .ToListAsync();
+    // }
+    public async Task<IEnumerable<Enquiry>> GetEnquiriesByUserID(int userId)
+    {
+        return await _context.Enquiries
+            .Include(e => e.Student)
+            .Include(e => e.Course)
+            .Where(e => e.Student.User.UserId == userId)
+            .ToListAsync();
+    }
         public async Task<bool> DeleteEnquiry(int id)
         {
             var enquiry = await _context.Enquiries.FindAsync(id);

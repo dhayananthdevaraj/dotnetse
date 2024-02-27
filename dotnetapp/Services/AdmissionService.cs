@@ -73,5 +73,14 @@ namespace dotnetapp.Services
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<IEnumerable<Admission>> GetAdmissionsByUserId(int userId)
+    {
+        return await _context.Admissions
+            .Include(a => a.Student)
+            .Include(a => a.Course)
+            .Where(a => a.Student.User.UserId == userId)
+            .ToListAsync();
+    }
     }
 }

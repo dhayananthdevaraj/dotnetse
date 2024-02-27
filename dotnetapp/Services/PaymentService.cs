@@ -32,6 +32,17 @@ namespace dotnetapp.Services
                 .FirstOrDefaultAsync(p => p.PaymentID == paymentId);
         }
 
+    public async Task<IEnumerable<Payment>> GetPaymentsByUserId(int userId)
+    {
+        return await _context.Payments
+            .Include(p => p.Student)
+            .Include(p => p.Admission)
+            .Where(p => p.Student.User.UserId == userId)
+            .ToListAsync();
+    }
+
+        
+
         public async Task<Payment> AddPayment(Payment newPayment)
         {
             _context.Payments.Add(newPayment);
